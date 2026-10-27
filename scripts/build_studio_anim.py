@@ -155,7 +155,7 @@ def beat_step(s, b, k, figs):
             {"kind": "slide"})
 
 
-OVERLAY_SRC = os.path.expanduser("~/Vidéos/OBS/assets")
+OVERLAY_SRC = os.path.expanduser(os.environ.get("HF_OVERLAYS_DIR", "~/Vidéos/OBS/assets"))
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
 

@@ -15,7 +15,7 @@ import os
 import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-SAVE_DIR = os.path.expanduser("~/Vidéos")
+SAVE_DIR = os.path.expanduser(os.environ.get("HF_VIDEOS_DIR", "~/Vidéos"))
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8321
 # Racine projet = parent de scripts/ (ce fichier vit dans <projet>/scripts/).
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

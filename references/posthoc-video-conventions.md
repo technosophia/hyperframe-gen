@@ -1,4 +1,4 @@
-# Conventions post-hoc vidéo (Mode B — référence v1.4.2, skill `hyperframe-joriel`)
+# Conventions post-hoc vidéo (mode webcam, skill `hyperframe-joriel`)
 
 Source = **enregistrement préalable** (1..n `.mkv` qui se succèdent, sans visuels).
 But = **plaquer le scénario HyperFrames langage Joriel sur l'audio**,
@@ -88,7 +88,7 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   Le champ `camera` n'est pas contrôlé par ce script : le build doit l'émettre
   en CUES (voir §4).
 
-## 4. Build index.html (natif HyperFrames — règles éprouvées lyceen-v5)
+## 4. Build index.html (natif HyperFrames — règles éprouvées)
 
 - 1 timeline racine pausée `window.__timelines["<slug>"]`, labels `SLIDE#k` = `t`
   mesurés ; visuels = clips `data-start`/`data-duration` ; micro-anims = tweens

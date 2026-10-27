@@ -4,7 +4,7 @@
 Usage :
     python3 build_studio_slides.py <slides.md> [-o studio-slides.html] [--assets assets]
 
-Principe (skill hyperframe-slide) : même coquille studio éprouvée que
+Principe (skill hyperframe-joriel) : même coquille studio éprouvée que
 lyceens-guerre-culturelle/studio.html (présentation manuelle + prompteur +
 webcam coin/plein écran + overlays OBS + enregistrement écran+micro -> webm),
 mais la source des slides n'est PLUS SCENES + transcript.json : c'est le
@@ -277,7 +277,7 @@ def parse_slides_file(path):
 
 # ---------------------------------------------------------------- overlays
 
-OVERLAY_SRC = os.path.expanduser("~/Vidéos/OBS/assets")
+OVERLAY_SRC = os.path.expanduser(os.environ.get("HF_OVERLAYS_DIR", "~/Vidéos/OBS/assets"))
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
 

@@ -1,4 +1,4 @@
-# Langage visuel Joriel — référence v1.2.1 (skill `hyperframe-joriel`)
+# Langage visuel Joriel (skill `hyperframe-joriel`)
 
 Identité verrouillée pour tous les scénarios HyperFrames de cette skill.
 **Les objets changent, les opérations restent.** Ne jamais réinventer un style
@@ -80,7 +80,7 @@ titres 96–140, chiffres 260–420, punchlines 110–150.
 ## 3. Primitives (blocs — seuls autorisés)
 
 Chaque étape = combinaison de ces blocs. Le balisage HTML est
-`examples/lyceen-s05/compositions/s05.html`.
+`examples/demo/compositions/i01.html` (`versus`, `diverge`, `dbig`) et `i00.html` (`versus`, étapes `punch`).
 
 | Bloc | Usage | Couleur |
 |---|---|---|
@@ -221,7 +221,7 @@ Si aucun mapping ne convient : 1) chercher une composition existante,
    `figures.json` (jamais du texte libre). **Une seule figure par étape**
    (un `count`, ou un `seuil`, ou un `compare3`, jamais deux).
 4. Poser ces blocs dans la composition, sur le balisage de
-   `examples/lyceen-s05/compositions/s05.html`. `cols2` si ≥ 5 items.
+   `examples/demo/compositions/i01.html`. `cols2` si ≥ 5 items.
 5. Les ids du scénario sont les labels GSAP. `check-steps.py`, puis preview :
    lisible à 3 m, 1 idée / étape, zéro chevauchement écran/prompteur.
 
@@ -256,8 +256,8 @@ Lucide/Tabler si importés un jour).
 Le §5 seul ne produit **aucune différence visible** quand deux opérations se
 rabattent sur les mêmes blocs (ex. `compare` ≈ `contrast` → kw + bar).
 Chaque gabarit ci-dessous a une signature de mise en page propre.
-`versus` est balisé dans `examples/lyceen-s05/compositions/s05.html`
-(étape `S05.3#3`). `diverge`, `seuil` et `compare3` utilisent les classes
+`versus` est balisé dans `examples/demo/compositions/i00.html`
+(étape `I0.1#1`). `diverge`, `seuil` et `compare3` utilisent les classes
 du même CSS. Les utiliser dès que l'intention correspond.
 
 ### 9.1. `versus` — contrast / refute à deux camps

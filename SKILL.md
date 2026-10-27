@@ -49,10 +49,24 @@ Visuel, identique d'une vidéo à l'autre : fond noir, typographie la plus grand
 
 Les valeurs, les blocs et les gabarits sont dans `references/visual-language-joriel.md`. Les appliquer, sans style improvisé. Le fond par défaut est `BG-00` ; le noir pur est réservé aux punchlines. Écran, caméra, sons, correspondance des étapes : `references/scenario-studio-conventions.md`.
 
+## Prérequis
+
+Variables d'environnement (valeurs par défaut entre parenthèses). Aucun chemin n'est écrit en dur ailleurs dans ce dépôt.
+
+| Variable | Rôle | Défaut |
+|---|---|---|
+| `SKILL_DIR` | dossier de cette skill | `~/.agents/skills/hyperframe-joriel` |
+| `HF_WORKDIR` | dossier des projets HyperFrames | `~/Code/hyperframes` |
+| `FASTMARKET_DIR` | dépôt fast-market (CLI `image`, `sound`) | `~/Code/fast-market` |
+| `HF_VIDEOS_DIR` | sortie des prises studio | `~/Vidéos` |
+| `HF_OVERLAYS_DIR` | overlays lus par le studio | `$HF_VIDEOS_DIR/OBS/assets` |
+
+Dépendances : Node ≥ 22, `hyperframes@0.8.123`, FFmpeg, Python 3, Chrome ou Edge (prise studio). Skills compagnes : `thesvg`, `media-use`, `hyperframes`, `hyperframe-scenario` (optionnelle), `report` (diagnostic). CLI fast-market : `image`, `sound`.
+
 ## Projet
 
 ```bash
-cd ~/Code/hyperframes
+cd "$HF_WORKDIR"
 npx --yes hyperframes@0.8.123 init <slug>
 cd <slug>
 ```
@@ -65,9 +79,10 @@ Dans les trois modes, on suit le même ordre :
 
 1. **Scénario** — l'histoire à raconter (amont, déjà à disposition).
 2. **Collecte des assets** — Pexels (image/vidéo 1920×1080), `thesvg` (SVG local sans altération, logos), recherche web (personnalités), génération via fast-market `image`, embeds YouTube/tweet (voir section Assets).
-3. **Transcript** — obtenu selon le mode (TTS+STT en auto, prise en slides, concat+clean+STT en webcam) → `transcript.json` (segments + mots, timecodes complets).
-4. **Storyboard** — généré à partir du `transcript.json`. Plan de l'écran, identifiants, cues.
-5. **Composition HyperFrames** — traduction du storyboard en HTML/CSS/JS selon le langage visuel figé (primitives). Voir `references/primitives-joriel.md` et `visual-language-joriel.md`.
+3. **Storyboard estimé** — écrit à partir du script, sans temps (modes auto et slides seulement ; le mode webcam n'en a pas).
+4. **Transcript** — obtenu selon le mode (TTS+STT en auto, prise en slides, concat+clean+STT en webcam) → `transcript.json` (segments + mots, timecodes complets).
+5. **Storyboard minuté** — temps absolus issus de `transcript.json`, mêmes identifiants et mêmes lignes que l'estimé. En webcam, c'est le seul storyboard. Plan de l'écran, identifiants, cues.
+6. **Composition HyperFrames** — traduction du storyboard minuté en HTML/CSS/JS selon le langage visuel figé (primitives). Voir `references/primitives-joriel.md` et `visual-language-joriel.md`.
 
 ## Storyboard
 
@@ -162,10 +177,7 @@ Le `id:` est celui du scénario. Chaque `fragment` est l'étape `#k` suivante. L
 
 ## Règles de rendu de la composition (spectateur final)
 
-> `npm run check` n'est exécuté que sur demande explicite de l'utilisateur.
-
-### Numérotation discrète
-- La numérotation discrète est une règle absolue, plus bas. Le `.slideno` reste à l'écran.
+> `python3 scripts/check-steps.py` est exécuté à chaque modification des étapes. `npm run check` (lent) est exécuté une fois avant toute demande de rendu mp4, et sur demande de l'utilisateur. Le mp4 n'est jamais rendu sans feu vert.
 
 ### Timing des sub-compositions (IMPORTANT)
 - Dans un fichier de sub-composition (`compositions/iNN.html`), les `data-start` doivent être **relatifs** au début de cette sub-composition (t=0 = début de la scène). Le `data-start` absolu (depuis le début de l'audio) est celui de l'`index.html` qui monte la sub-composition via `data-composition-src` + `data-start`.
@@ -240,7 +252,7 @@ Le storyboard nomme les fonds et les visuels. On les résout avant la compositio
 5. Une personnalité ou un sujet identifiable : recherche web, puis capture locale (screenshot si accessible, card stylisée si paywallé/bloqué) — voir `references/embed-tweets-video.md` §8.
 6. Un extrait YouTube ou un tweet : embed local (voir `references/embed-tweets-video.md`). La source prime sur une image générique.
 
-### Outils fast-market (`~/Code/fast-market/`)
+### Outils fast-market (`$FASTMARKET_DIR`)
 
 - **Image** : `image generate '<prompt>' -e flux29bcloud -w 1920 -h 1080 --output-format JPEG -o assets/ -F json` (équivalent `-e flux2cloud --cf-model 9b`). Pas de 4B. La CLI écrit toujours `<engine>_0.jpeg` : le renommer tout de suite. Erreur 400 : retirer les termes menaçants et reformuler. Fond par défaut `BG-00`. Noir pur seulement pour une punchline. Voile 55–70 % et zoom lent 3–6 % sur une photo.
 - **Audio (TTS)** : `npx hyperframes tts` (Kokoro) — utilisé en mode auto pour vocaliser le script. Voir skill `media-use`.
@@ -255,12 +267,12 @@ Le storyboard nomme les fonds et les visuels. On les résout avant la compositio
 
 **Nomenclature des fichiers de composition :** toujours deux chiffres avec zéro initial pour le numéro de scène — `i00.html`, `i01.html`, …, `i09.html`, `i10.html`. Jamais `i3.html`. Les identifiants (`data-composition-id`, `window.__timelines`, cadre caméra) suivent le même nommage (`i03`, etc.).
 
-Le HTML réalise le storyboard. `index.html` monte une scène par unité (`compositions/sNN.html`). Le balisage, les classes et la timeline sont ceux de `examples/demo/` : le chapitre S05 de lyceen-v5, la version publiée. Les ids du scénario sont les labels GSAP. `python3 scripts/check-steps.py`, puis `npm run check`.
+Le HTML réalise le storyboard. `index.html` monte une scène par unité (`compositions/iNN.html`). Le balisage, les classes et la timeline sont ceux de `examples/demo/` : le chapitre de démonstration (15 scènes, `i00` à `i14`), la version publiée. Les ids du scénario sont les labels GSAP. `python3 scripts/check-steps.py`, puis `npm run check`.
 
 L'exemple se vérifie seul :
 
 ```bash
-cd ~/.agents/skills/hyperframe-joriel/examples/demo && npm run check
+cd $SKILL_DIR/examples/demo && npm run check
 ```
 
 Deux modèles et deux contextes donnent deux HTML. L'exemple fixe le passage d'un chapitre. Le film reprend ce montage, une scène par unité du storyboard. Les scripts de preview du mode slides restent dans la section Slides.
@@ -302,11 +314,11 @@ Pas de prise, pas de slides. Le TTS lit le script (le scénario oralisé). Le sc
 Entrée : le script. Écrire le scénario au format estimé, puis les slides aux mêmes identifiants. La composition suit le scénario, avant la prise. Après la prise, le transcript peut s'écarter du script : les temps suivent le transcript. Une étape dont l'écran ne correspond plus à ce qui a été dit se reprend. Si le deck est déjà fourni, le copier vers `assets/slides.md` et ne pas le réécrire (`references/advanced-slides-subset.md`). Résoudre les assets avant la preview.
 
 ```bash
-cp ~/.agents/skills/hyperframe-joriel/scripts/build_studio_slides.py scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/build_studio_anim.py scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/studio_server.py scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/check-steps.py scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/make-sfx.py scripts/
+cp $SKILL_DIR/scripts/build_studio_slides.py scripts/
+cp $SKILL_DIR/scripts/build_studio_anim.py scripts/
+cp $SKILL_DIR/scripts/studio_server.py scripts/
+cp $SKILL_DIR/scripts/check-steps.py scripts/
+cp $SKILL_DIR/scripts/make-sfx.py scripts/
 ```
 
 Deux previews. Par défaut, la slide et les notes restent au prompteur ; l'enregistrement capture les clips. La preview du deck ne sert que si la prise doit montrer le deck lui-même.
@@ -346,11 +358,11 @@ python3 scripts/studio_server.py 8321
 
 Fenêtre capturée : `http://localhost:8321/<preview>?view=present`. Fenêtre du locuteur : `?view=prompteur`. Le bouton **Ouvrir présentation** ouvre la première. `<preview>` est `studio-slides.html`, `studio-anim.html` ou `studio.html`.
 
-Essai : Avance/Recule sur un fragment, caméra en coin, un overlay, 5 s d'enregistrement → `~/Vidéos/prise-studio-*.webm`.
+Essai : Avance/Recule sur un fragment, caméra en coin, un overlay, 5 s d'enregistrement → `$HF_VIDEOS_DIR/prise-studio-*.webm`.
 
-Prise : improviser depuis les notes, dans l'ordre du scénario. Raté : Pause, Recule, Reprendre. Une seule prise continue. Stop envoie le fichier dans `~/Vidéos/`.
+Prise : improviser depuis les notes, dans l'ordre du scénario. Raté : Pause, Recule, Reprendre. Une seule prise continue. Stop envoie le fichier dans `$HF_VIDEOS_DIR`.
 
-Overlays lus depuis `~/Vidéos/OBS/assets` vers `assets/overlays/`. Caméra : Off, coin, mi-écran, miroir.
+Overlays lus depuis `$HF_OVERLAYS_DIR` vers `assets/overlays/`. Caméra : Off, coin, mi-écran, miroir.
 
 ### Après la prise
 
@@ -365,10 +377,10 @@ La prise est déjà faite : le locuteur a lu le script (transcript chapitré), s
 Même init que Projet, puis :
 
 ```bash
-cp ~/.agents/skills/hyperframe-joriel/scripts/concat-mkv.sh scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/clean-posthoc.py scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/check-steps.py scripts/
-cp ~/.agents/skills/hyperframe-joriel/scripts/make-sfx.py scripts/
+cp $SKILL_DIR/scripts/concat-mkv.sh scripts/
+cp $SKILL_DIR/scripts/clean-posthoc.py scripts/
+cp $SKILL_DIR/scripts/check-steps.py scripts/
+cp $SKILL_DIR/scripts/make-sfx.py scripts/
 bash scripts/concat-mkv.sh assets/cam-original.mkv <troncon1.mkv> [<troncon2.mkv> ...]
 python3 scripts/clean-posthoc.py assets/cam-original.mkv
 # → assets/cam-clean.mkv + assets/voix-posthoc-v1.wav (nouveau nom à chaque passe)

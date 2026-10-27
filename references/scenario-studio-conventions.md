@@ -1,6 +1,6 @@
-# Conventions du studio scénario (référence v1.2.1)
+# Conventions du studio scénario
 
-Le balisage du rendu est `examples/lyceen-s05/`. Ce fichier décrit le studio :
+Le balisage du rendu est `examples/demo/`. Ce fichier décrit le studio :
 correspondance des ids, prompteur, sons, fonds.
 
 Pattern éprouvé sur `~/Code/hyperframes/lyceens-v3` : quand le projet contient,

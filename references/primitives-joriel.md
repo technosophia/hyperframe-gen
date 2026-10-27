@@ -1,7 +1,7 @@
 # Primitives HTML — catalogue Joriel
 
 Source de vérité pour la traduction scénario → HTML.
-Extrait de `examples/lyceen-s05/` et `~/Code/hyperframes/lyceen-v5/`.
+Extrait de `examples/demo/`.
 Chaque primitive ci-dessous est un bloc HTML réutilisable tel quel.
 
 ## Structure d'une étape (step)

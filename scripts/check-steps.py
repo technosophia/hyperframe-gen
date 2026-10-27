@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contrôle de correspondance scénario ↔ slides ↔ timeline (skill hyperframe-slide).
+"""Contrôle de correspondance scénario ↔ slides ↔ timeline (skill hyperframe-joriel).
 
 1. Lit le deck slides et en déduit les étapes : chaque `id: X.N` donne `X.N#0`,
    puis un `#k` par fragment `class="fragment"` de la slide.
