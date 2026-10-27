@@ -4,7 +4,7 @@ description: Build a Joriel-styled HyperFrames video in one of three modes — a
 argument-hint: "<script.md | video.mkv>"
 author: joriel
 category: Video Creation
-version: 1.8.3
+version: 1.9.0
 ---
 
 # Hyperframe-joriel
@@ -185,50 +185,7 @@ Le `id:` est celui du scénario. Chaque `fragment` est l'étape `#k` suivante. L
 
 ### Webcam
 
-Une seule webcam, trois modes, `data-cam` sur l'étape. La définition de la prise ne tient pas un vrai plein écran : `full` est un pseudo plein écran.
-
-- `off` — rien à l'écran. Le visuel porte l'argument. Obligatoire sur une punchline (noir, texte or) et sur un gabarit dense (`versus`, `diverge`, `seuil`, `compare3`, barres).
-- `pip` — incrustation en bas à droite, 22 % de la largeur. Le schéma reste lisible, le locuteur reste là. Chiffre isolé, preuve, explication.
-- `full` — fond et étapes floutés, webcam centrée sur la moitié de l'écran (50 % × 50 %). Entrée de scène, question ouverte, conclusion, moment où le visage porte le propos.
-
-Rythme : un état dure au moins 2,5 s. Le changement de mode est un `tl.set` de `visibility`, immédiat ; seul le flou dure 0,3 s. Jamais de cut sec. Revoir le locuteur (`pip` ou `full`) au moins toutes les ~20 s.
-
-On ne redimensionne pas la balise `<video>`. Le runtime la passe en `opacity: 0` et peint l'image sur un canvas calé sur la vidéo. Le cadre est un `<div class="cam-frame">` qui contient la vidéo ; la vidéo remplit le cadre (`inset: 0`). C'est le div qu'on place.
-
-`.clip { inset: 0 }` laisse `top: 0`. Sur un cadre à hauteur fixe, `top` et `bottom` ensemble font ignorer `bottom` : le cadre colle en haut. `pip` remet `top: auto`. `full` remet `right` et `bottom` à `auto`.
-
-```css
-.cam-frame{position:absolute;top:auto;bottom:2vh;right:2vw;left:auto;width:22vw;height:12.4vw;z-index:6;border-radius:1.2vh;overflow:hidden;border:2px solid var(--bleu);background:#000}
-.cam-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-```
-
-`12.4vw` de haut pour `22vw` de large, c'est le 16:9 de la prise. `full` est 50 % × 50 % : sur un cadre 16:9, c'est la moitié de l'écran, centré.
-
-Le seek passe avec `suppressEvents`. GSAP 3 n'applique pas `className`. Le cadre se pose en `tl.set`, pas dans un callback. `off` cache le cadre (`visibility`), sans tween d'`opacity` sur la vidéo. Le flou va sur `#fond` et sur chaque `.step`, jamais sur `#root` ni sur le cadre.
-
-```js
-function applyCam(tl, frame, mode, t) {
-  var box = mode === "full"
-    ? { top: "25%", left: "25%", right: "auto", bottom: "auto", width: "50%", height: "50%", borderColor: "transparent", boxShadow: "0 0 40px rgba(0,0,0,.6)" }
-    : { top: "auto", left: "auto", right: "2vw", bottom: "2vh", width: "22vw", height: "12.4vw", borderColor: "#5B9CF6", boxShadow: "none" };
-  tl.set(frame, Object.assign({ visibility: mode === "off" ? "hidden" : "visible" }, box), t);
-  var blur = mode === "full" ? "blur(8px)" : "blur(0px)";
-  tl.to("#fond", { filter: blur, duration: 0.3 }, t);
-  document.querySelectorAll(".step,.step-punch").forEach(function (st) {
-    tl.to("#" + st.id, { filter: blur, duration: 0.3 }, t);
-  });
-}
-```
-
-Le corps est recopié dans chaque composition : le script doit rester dans le HTML (scope HyperFrames), pas de fichier partagé.
-
-Le cadre a `data-start="0"` et la durée de sa scène, pour disparaître avec elle. Pas de `style` inline. L'id du cadre est unique dans le projet (`cam-frame-i00`…), les ids `cam` dupliqués se marchent dessus.
-
-### Fonds
-- Varier les images de fond entre chapitres au minimum.
-
-
-
+Trois états : `off`, `pip`, `full`. Rythme : un état dure au moins 2,5 s ; revoir le locuteur (`pip` ou `full`) au moins toutes les ~20 s. Détails (CSS, `applyCam`, règles de cadre) : `references/webcam.md`.
 La composition est vue par le spectateur, pas par l'auteur. Règles absolues :
 
 - **Numérotation discrète obligatoire.** Chaque étape affiche son identifiant (`I0.1#0`) en bas à gauche, gris, classe `.slideno`. C’est le repère de debug. Il reste à l’écran, y compris au rendu.
@@ -240,6 +197,10 @@ La composition est vue par le spectateur, pas par l'auteur. Règles absolues :
 - Les directives `verify`/`draft` se traduisent par le style (couleur or, pastille visuelle dédiée) ou restent invisibles ; jamais le mot « draft ».
 
 ## Assets
+
+### Fonds
+- Varier les images de fond entre chapitres au minimum.
+
 
 Le storyboard nomme les fonds et les visuels. On les résout avant la composition.
 
@@ -311,64 +272,8 @@ Pas de prise, pas de slides. Le TTS lit le script (le scénario oralisé). Le sc
 
 ## Mode slides
 
-Entrée : le script. Écrire le scénario au format estimé, puis les slides aux mêmes identifiants. La composition suit le scénario, avant la prise. Après la prise, le transcript peut s'écarter du script : les temps suivent le transcript. Une étape dont l'écran ne correspond plus à ce qui a été dit se reprend. Si le deck est déjà fourni, le copier vers `assets/slides.md` et ne pas le réécrire (`references/advanced-slides-subset.md`). Résoudre les assets avant la preview.
+Entrée : le script. Résumé et lien : `references/studio-slides.md`.
 
-```bash
-cp $SKILL_DIR/scripts/build_studio_slides.py scripts/
-cp $SKILL_DIR/scripts/build_studio_anim.py scripts/
-cp $SKILL_DIR/scripts/studio_server.py scripts/
-cp $SKILL_DIR/scripts/check-steps.py scripts/
-cp $SKILL_DIR/scripts/make-sfx.py scripts/
-```
-
-Deux previews. Par défaut, la slide et les notes restent au prompteur ; l'enregistrement capture les clips. La preview du deck ne sert que si la prise doit montrer le deck lui-même.
-
-### Preview du deck
-
-```bash
-python3 scripts/build_studio_slides.py assets/slides.md -o studio-slides.html
-```
-
-- `?view=present` : le deck, 1920×1080. Fond photo si `<!-- img: ... -->` ou `![...](...)`, sinon fond uni.
-- `?view=prompteur` : aperçu + `note:` en grand. `(pas de notes)` si absent. Jamais projeté.
-- Chaque `fragment` est une étape. Avance (Espace/→/clic) révèle le fragment puis la slide suivante. Recule (←) inverse. Compteur `fragment k/n` des deux côtés.
-- Compléter les slides sans `note:` avant la prise.
-
-### Preview de la composition
-
-Le prompteur montre les notes : ancre (étape, fragment, durée, cue) + `note:` en grand. Jamais le transcript en entier, jamais la ligne déjà dans le clip. Les clips sont la prise. `studio.html` sert à la prise, `index.html` au rendu, mêmes labels que le scénario.
-
-Animation pas à pas, le deck en mémo seulement :
-
-```bash
-python3 scripts/build_studio_anim.py -o studio-anim.html
-```
-
-Présentation : `data/scenes.json` + `data/figures.json`. Prompteur : `assets/slides.md`, relié par `I1`, `S01`, etc. 1 pas = 1 beat, dernier pas = punch. Synchro `studio-anim`.
-
-Présentation et prompteur avancent ensemble (BroadcastChannel + localStorage). Avance et Recule des deux côtés.
-
-### Servir et enregistrer
-
-Caméra, capture et POST `/prise` exigent Chrome ou Edge en `http://localhost`. Pas de `file://`.
-
-```bash
-python3 scripts/studio_server.py 8321
-```
-
-Fenêtre capturée : `http://localhost:8321/<preview>?view=present`. Fenêtre du locuteur : `?view=prompteur`. Le bouton **Ouvrir présentation** ouvre la première. `<preview>` est `studio-slides.html`, `studio-anim.html` ou `studio.html`.
-
-Essai : Avance/Recule sur un fragment, caméra en coin, un overlay, 5 s d'enregistrement → `$HF_VIDEOS_DIR/prise-studio-*.webm`.
-
-Prise : improviser depuis les notes, dans l'ordre du scénario. Raté : Pause, Recule, Reprendre. Une seule prise continue. Stop envoie le fichier dans `$HF_VIDEOS_DIR`.
-
-Overlays lus depuis `$HF_OVERLAYS_DIR` vers `assets/overlays/`. Caméra : Off, coin, mi-écran, miroir.
-
-### Après la prise
-
-1. Transcrire, retirer les silences, re-transcrire l'audio final.
-2. Caler les clips sur la voix (ancres = débits du transcript, cues = fragments). `index.html` porte les timings. `npm run check`, preview, mp4 sur feu vert uniquement.
-3. Échec inexpliqué : skill `report`.
 
 ## Mode webcam
 
