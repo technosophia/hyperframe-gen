@@ -19,7 +19,7 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   d'écrasement en place (cache rendu).
 - **Caméra = décision automatique de la skill** (agent, pendant la scénarisation —
   jamais l'utilisateur) : le scénario déclare par étape `camera: off | pip | full`.
-  Géométrie, flou et moment d'usage : `SKILL.md`, section Webcam.
+  Géométrie, flou et moment d'usage : references/webcam.md.
   Surcharge utilisateur optionnelle (`camera!:`), jamais exigée.
 - **Zéro studio d'enregistrement** en Mode B : pas de `studio-slides.html`,
   pas de prompteur, pas de POST /prise. Le livrable est direct `index.html` auto.
@@ -81,7 +81,7 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   cue, appear, type, fond, figures, duration, punch`) **plus**
   `camera: off|pip|full` + `cam_src` (toujours `assets/cam-original.mkv`,
   `media_start` = temps caméra = temps audio si A/V synchrones, sinon décalage
-  noté). Le choix du mode et le rythme sont dans `SKILL.md`, section Webcam.
+  noté). Le choix du mode et le rythme sont dans references/webcam.md.
 - `data/figures.json` : inchangé (registre unique, `ok`/`verify`, sources).
   `data/design.json` : inchangé (blocs §3 + gabarits §9 du langage).
 - Contrôle : `python3 scripts/check-steps.py` vert (étapes ↔ labels), comme §2c.
@@ -112,7 +112,7 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   réduite. Versus : `min-width:0` + padding sur les colonnes.
 - Caméra : spans fusionnés par état, fondus + zoom d'apparition
   (`fromTo` scale .85→1 + opacity 0,5 s ; jamais de cut sec).
-  - `pip` et `full` : géométrie dans `SKILL.md`, section Webcam.
+  - `pip` et `full` : géométrie dans references/webcam.md.
     Le cadre est un `div.cam-frame`, pas la balise vidéo. `tl.set` sur ce div.
   - Bandes noires cuites dans la source (pillarbox) : rognées côté CSS
     (`object-view-box:inset(0 8% 0 8%)`, cadre round intact, crop assumé),
