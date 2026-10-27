@@ -1,6 +1,6 @@
 ---
 name: hyperframe-joriel
-description: Build a Joriel-styled HyperFrames video in one of three modes — auto (the script is the transcript, vocalized with TTS), slides (composition from the script, then a live take that may diverge), or webcam (a take read from the script, then the composition from the measured transcript). Write the scenario before the composition. The worked chapter is examples/lyceen-s05. Use when the user asks for hyperframe-joriel.
+description: Build a Joriel-styled HyperFrames video in one of three modes — auto (the script is the transcript, vocalized with TTS), slides (composition from the script, then a live take that may diverge), or webcam (a take read from the script, then the composition from the measured transcript). Write the scenario before the composition. The worked chapter is examples/demo. Use when the user asks for hyperframe-joriel.
 argument-hint: "<script.md | video.mkv>"
 author: joriel
 category: Video Creation
@@ -26,8 +26,9 @@ S'il manque le script : le demander, ou l'obtenir via `hyperframe-scenario`. Un 
 - **Script** : le texte de départ, dans les trois modes.
 - **Transcript** : ce qui est dit. Auto : le script, lu par le TTS. Slides : la prise, qui peut s'écarter beaucoup du script. Webcam : la lecture, écart faible. Après une prise, le transcript mesuré porte les temps.
 - **Notes** : le guide pour commenter. Visibles du locuteur seul (`note:`).
-- **Scénario** : le storyboard écrit avant la composition (`assets/scenario-hyperframes.md`). Il décrit l'écran, pas ce qui est dit.
-- **Composition** : le document HTML animé. Une scène par unité du scénario. Le chapitre de référence est `examples/lyceen-s05/`.
+- **Scénario** : l'histoire qu'on va raconter, écrite avant tout le reste. C'est l'amont de toutes les étapes. Dans les trois modes, on part toujours d'un scénario à disposition.
+- **Storyboard** : la mise en scène écrite avant la composition (`assets/scenario-hyperframes.md`). Il décrit l'écran, pas ce qui est dit. Généré à partir du `transcript.json` (timecodes complets). C'est ce qu'on appelait auparavant « scénario ».
+- **Composition** : le document HTML animé. Une scène par unité du scénario. Le chapitre de référence est `examples/demo/`.
 - **Preview** : le HTML affiché avant le mp4.
 
 Les références disent encore « Mode A », « Mode B », « guide oral ». Lire ainsi : Mode slides = Mode A, Mode webcam = Mode B, notes = `note:`, transcript = texte dit. Le « scénario » des références est ce fichier d'écran.
@@ -58,7 +59,17 @@ cd <slug>
 
 `assets/gsap.min.js` doit être là (template d'init, ou copie d'un projet existant). Jamais de CDN au rendu.
 
-## Scénario
+## Étapes communes (ordre canonique)
+
+Dans les trois modes, on suit le même ordre :
+
+1. **Scénario** — l'histoire à raconter (amont, déjà à disposition).
+2. **Collecte des assets** — Pexels (image/vidéo 1920×1080), `thesvg` (SVG local sans altération, logos), recherche web (personnalités), génération via fast-market `image`, embeds YouTube/tweet (voir section Assets).
+3. **Transcript** — obtenu selon le mode (TTS+STT en auto, prise en slides, concat+clean+STT en webcam) → `transcript.json` (segments + mots, timecodes complets).
+4. **Storyboard** — généré à partir du `transcript.json`. Plan de l'écran, identifiants, cues.
+5. **Composition HyperFrames** — traduction du storyboard en HTML/CSS/JS selon le langage visuel figé (primitives). Voir `references/primitives-joriel.md` et `visual-language-joriel.md`.
+
+## Storyboard
 
 Écrit avant toute composition, dans `assets/scenario-hyperframes.md`. Fichiers à donner à un LLM : voir Contexte LLM. C'est le plan de l'écran. Chaque ligne affichée illustre le transcript : un mot-clé, un chiffre, une flèche, une liste. Elle ne recopie pas la phrase dite. Le `type` de chaque scène est une opération du langage visuel (`references/visual-language-joriel.md`) : `title`, `numbers`, `bars`, `cards`, `list`, `versus`, `punch`, ou un nom du catalogue (`count`, `negate`, `causal-chain`, `enumerate`…). Un élément nouveau par étape. Les chiffres viennent du registre, jamais du texte libre.
 
@@ -218,32 +229,41 @@ La composition est vue par le spectateur, pas par l'auteur. Règles absolues :
 
 ## Assets
 
-Le scénario nomme les fonds et les visuels. On les résout avant la composition.
+Le storyboard nomme les fonds et les visuels. On les résout avant la composition.
+
+### Sources
 
 1. Un fichier déjà là (ce projet, ou un asset du même sujet) se réutilise.
-2. Sinon, image ou vidéo : Pexels, 1920×1080, téléchargé dans `assets/`. Noter l'URL, l'id, l'auteur et la requête. Rien n'est chargé du réseau au rendu.
+2. Image ou vidéo : Pexels, 1920×1080, téléchargé dans `assets/`. Noter l'URL, l'id, l'auteur et la requête. Rien n'est chargé du réseau au rendu.
 3. Un concept ou une idée (pas une photo) : skill `thesvg`, SVG local, sans altération. Les logos aussi.
-4. Une ambiance abstraite sans plan Pexels utilisable : Flux.2 Klein 9B.
+4. Une ambiance abstraite sans plan Pexels utilisable : Flux.2 Klein 9B (fast-market `image`).
+5. Une personnalité ou un sujet identifiable : recherche web, puis capture locale (screenshot si accessible, card stylisée si paywallé/bloqué) — voir `references/embed-tweets-video.md` §8.
+6. Un extrait YouTube ou un tweet : embed local (voir `references/embed-tweets-video.md`). La source prime sur une image générique.
 
-```bash
-image generate '<prompt>' -e flux29bcloud -w 1920 -h 1080 --output-format JPEG -o assets/ -F json
-```
+### Outils fast-market (`~/Code/fast-market/`)
 
-Équivalent : `-e flux2cloud --cf-model 9b`. Pas de 4B. La CLI écrit toujours `<engine>_0.jpeg` : le renommer tout de suite. Erreur 400 : retirer les termes menaçants et reformuler. Fond par défaut `BG-00`. Noir pur seulement pour une punchline. Voile 55–70 % et zoom lent 3–6 % sur une photo, pour que le texte reste lisible.
+- **Image** : `image generate '<prompt>' -e flux29bcloud -w 1920 -h 1080 --output-format JPEG -o assets/ -F json` (équivalent `-e flux2cloud --cf-model 9b`). Pas de 4B. La CLI écrit toujours `<engine>_0.jpeg` : le renommer tout de suite. Erreur 400 : retirer les termes menaçants et reformuler. Fond par défaut `BG-00`. Noir pur seulement pour une punchline. Voile 55–70 % et zoom lent 3–6 % sur une photo.
+- **Audio (TTS)** : `npx hyperframes tts` (Kokoro) — utilisé en mode auto pour vocaliser le script. Voir skill `media-use`.
+- **Audio (STT)** : transcription Whisper via l'utilitaire fast-market (`sound transcribe … -F json -l fr -o …`) — utilisé en auto et en webcam pour produire `transcript.json`.
+
+### Règles
+
+- Rien n'est chargé du réseau au rendu.
+- Le storyboard nomme les fonds et les visuels ; on les résout avant la composition.
 
 ## Composition
 
 **Nomenclature des fichiers de composition :** toujours deux chiffres avec zéro initial pour le numéro de scène — `i00.html`, `i01.html`, …, `i09.html`, `i10.html`. Jamais `i3.html`. Les identifiants (`data-composition-id`, `window.__timelines`, cadre caméra) suivent le même nommage (`i03`, etc.).
 
-Le HTML réalise le scénario. `index.html` monte une scène par unité (`compositions/sNN.html`). Le balisage, les classes et la timeline sont ceux de `examples/lyceen-s05/` : le chapitre S05 de lyceen-v5, la version publiée. Les ids du scénario sont les labels GSAP. `python3 scripts/check-steps.py`, puis `npm run check`.
+Le HTML réalise le storyboard. `index.html` monte une scène par unité (`compositions/sNN.html`). Le balisage, les classes et la timeline sont ceux de `examples/demo/` : le chapitre S05 de lyceen-v5, la version publiée. Les ids du scénario sont les labels GSAP. `python3 scripts/check-steps.py`, puis `npm run check`.
 
 L'exemple se vérifie seul :
 
 ```bash
-cd ~/.agents/skills/hyperframe-joriel/examples/lyceen-s05 && npm run check
+cd ~/.agents/skills/hyperframe-joriel/examples/demo && npm run check
 ```
 
-Deux modèles et deux contextes donnent deux HTML. L'exemple fixe le passage d'un chapitre. Le film reprend ce montage, une scène par unité du scénario. Les scripts de preview du mode slides restent dans la section Slides.
+Deux modèles et deux contextes donnent deux HTML. L'exemple fixe le passage d'un chapitre. Le film reprend ce montage, une scène par unité du storyboard. Les scripts de preview du mode slides restent dans la section Slides.
 
 ## Contexte LLM
 
@@ -264,17 +284,17 @@ Fichiers indispensables, à donner tels quels.
 1. Le scénario de ce film (`assets/scenario-hyperframes.md`).
 2. `references/visual-language-joriel.md`
 3. `references/primitives-joriel.md` (balisage HTML exact par primitive)
-4. `examples/lyceen-s05/scenario.md`
-5. `examples/lyceen-s05/index.html`
-6. `examples/lyceen-s05/compositions/s05.html`
+4. `examples/demo/scenario.md`
+5. `examples/demo/index.html`
+6. `examples/demo/compositions/i00.html` (et les suivants)
 
 ## Mode auto
 
-Pas de prise, pas de slides. Le TTS lit le script.
+Pas de prise, pas de slides. Le TTS lit le script (le scénario oralisé). Le scénario = le transcript.
 
-1. Écrire le scénario au format estimé. Résoudre les assets.
-2. Vocaliser le transcript avec `npx hyperframes tts` (Kokoro, skill `media-use`).
-3. Recaler le scénario en temps absolus sur cette voix, sans changer les lignes.
+1. Écrire le storyboard au format estimé. Résoudre les assets.
+2. Vocaliser le script avec le TTS fast-market (`npx hyperframes tts`, Kokoro — skill `media-use`), puis transcrire avec Whisper fast-market pour obtenir `transcript.json`.
+3. Recaler le storyboard en temps absolus sur cette voix, sans changer les lignes.
 4. Monter la composition (labels = temps). `npm run check` vert, preview, mp4 sur feu vert uniquement.
 
 ## Mode slides
@@ -340,7 +360,7 @@ Overlays lus depuis `~/Vidéos/OBS/assets` vers `assets/overlays/`. Caméra : Of
 
 ## Mode webcam
 
-La prise est déjà faite : le locuteur a lu le script, sans composition. Pas de prompteur. Le scénario minuté et la composition partent du transcript mesuré. Détail caméra, nettoyage et cues : `references/posthoc-video-conventions.md`.
+La prise est déjà faite : le locuteur a lu le script (transcript chapitré), sans composition. Pas de prompteur. Les vidéos par chapitre sont concaténées, puis transcrites pour obtenir `transcript.json`. Le storyboard minuté et la composition partent du transcript mesuré. Détail caméra, nettoyage et cues : `references/posthoc-video-conventions.md`.
 
 Même init que Projet, puis :
 
@@ -355,6 +375,6 @@ python3 scripts/clean-posthoc.py assets/cam-original.mkv
 sound transcribe assets/voix-posthoc-v1.wav -F json -l fr -o /tmp/tr.json
 ```
 
-Puis le transcript mesuré (`transcript.json`, segments + mots, skill `hyperframes`) et le scénario minuté sur cet audio. Pas de slides. Résoudre les assets, puis la composition. Chaque étape est un clip de la scène, comme `examples/lyceen-s05/`. Sélecteurs GSAP scopés à l'étape. `npm run check` vert, preview, snapshots, mp4 sur feu vert uniquement.
+Puis le transcript mesuré (`transcript.json`, segments + mots, skill `hyperframes`) et le scénario minuté sur cet audio. Pas de slides. Résoudre les assets, puis la composition. Chaque étape est un clip de la scène, comme `examples/demo/`. Sélecteurs GSAP scopés à l'étape. `npm run check` vert, preview, snapshots, mp4 sur feu vert uniquement.
 
 L'audio nettoyé fait foi : tout timing se remesure après le nettoyage. La caméra suit la section Webcam, sauf surcharge explicite. Pas de cut sec.

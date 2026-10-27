@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"></head><body>
+<template>
+<link rel="stylesheet" href="assets/style-joriel.css">
+<div data-hf-id="hf-root" id="root" data-composition-id="i13" data-width="1920" data-height="1080" data-duration="17.20">
+<div data-hf-id="hf-cf8y" class="clip bg" id="fond" data-start="0" data-duration="17.20" data-track-index="0">
+  <img data-hf-id="hf-a7qi" class="fond" id="fond-img" src="assets/bg/BG-00.jpg" alt="">
+  <div data-hf-id="hf-89y7" class="voile"></div>
+</div>
+
+<div data-hf-id="hf-tyii" id="cam-frame-i13" class="cam-frame clip" data-track-index="2">
+<video data-hf-id="hf-8hs8" id="cam-i13" src="assets/cam-clean.mkv" data-start="0" data-duration="17.20" data-media-start="844.80" data-track-index="2" muted playsinline data-media-start="844.80"></video>
+</div>
+
+<section data-hf-id="hf-tflq" class="clip step" id="step-I13-10" data-step="I13.1#0" data-start="0.00" data-duration="8.46" data-track-index="1" data-cam="pip">
+  <div data-hf-id="hf-3a8o" class="kicker">Les garde-fous ne viendront pas seuls</div>
+  <div data-hf-id="hf-m943" class="slideno">I13.1#0</div>
+  <div data-hf-id="hf-xrws" class="stitle">Les garde-fous ne viendront pas seuls</div>
+  <div data-hf-id="hf-5c1e" class="zone"><div data-hf-id="hf-63jj" class="in" id="in-step-I13-10"><div data-hf-id="hf-p4my" class="dline"><span data-hf-id="hf-xnd3" class="dkw plain">DÉCOUVERTES  ↔  GARDE-FOUS</span></div></div></div>
+</section>
+<section data-hf-id="hf-r725" class="clip step" id="step-I13-11" data-step="I13.1#1" data-start="8.46" data-duration="8.74" data-track-index="1" data-cam="full">
+  <div data-hf-id="hf-9cs0" class="kicker">Les garde-fous ne viendront pas seuls</div>
+  <div data-hf-id="hf-mnf4" class="slideno">I13.1#1</div>
+  <div data-hf-id="hf-ofc4" class="stitle">Les garde-fous ne viendront pas seuls</div>
+  <div data-hf-id="hf-y6ly" class="zone"><div data-hf-id="hf-25fi" class="in" id="in-step-I13-11"><div data-hf-id="hf-t07y" class="dline"><span data-hf-id="hf-takm" class="dkw plain">UN ENJEU COLLECTIF</span></div></div></div>
+</section>
+</div>
+<script>
+function applyCam(tl, frame, mode, t) {
+  var box = mode === "full"
+    ? { top: "25%", left: "25%", right: "auto", bottom: "auto", width: "50%", height: "50%", borderColor: "transparent", boxShadow: "0 0 40px rgba(0,0,0,.6)" }
+    : { top: "auto", left: "auto", right: "2vw", bottom: "2vh", width: "22vw", height: "12.4vw", borderColor: "#5B9CF6", boxShadow: "none" };
+  tl.set(frame, Object.assign({ visibility: mode === "off" ? "hidden" : "visible" }, box), t);
+  var blur = mode === "full" ? "blur(8px)" : "blur(0px)";
+  tl.to("#fond", { filter: blur, duration: 0.3 }, t);
+  document.querySelectorAll(".step,.step-punch").forEach(function (st) {
+    tl.to("#" + st.id, { filter: blur, duration: 0.3 }, t);
+  });
+}
+const tl = gsap.timeline({ paused: true });
+tl.fromTo("#fond-img", { scale: 1 }, { scale: 1.05, duration: 8, ease: "none" }, 0);
+document.querySelectorAll(".step,.step-punch").forEach(function (step) {
+  const t = parseFloat(step.getAttribute("data-start"));
+  const camMode = step.getAttribute("data-cam") || "off";
+  applyCam(tl, "#cam-frame-i13", camMode, t);
+  tl.addLabel(step.getAttribute("data-step"), t);
+  const inEl = step.querySelector(".in");
+  if (inEl) tl.fromTo("#" + inEl.id, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, t);
+  // Dynamique : versus (gauche diminue, droite s'agrandit) + pulse des chiffres
+  var _vs = step.querySelector(".versus");
+  if (_vs) {
+    var _l = _vs.querySelector(".vcol.left");
+    var _r = _vs.querySelector(".vcol.right");
+    if (_l) tl.fromTo(_l, { scale: 1 }, { scale: 0.82, duration: 0.7, ease: "power2.out" }, t + 0.25);
+    if (_r) tl.fromTo(_r, { scale: 1 }, { scale: 1.18, duration: 0.7, ease: "power2.out" }, t + 0.25);
+  }
+  var _num = step.querySelector(".dbig") || step.querySelector(".dkw");
+  if (_num && inEl) tl.fromTo("#" + inEl.id, { scale: 0.85 }, { scale: 1, duration: 0.5, ease: "back.out(1.6)" }, t + 0.1);
+
+});
+window.__timelines = window.__timelines || {};
+window.__timelines["i13"] = tl;
+</script>
+</template>
+</body></html>
