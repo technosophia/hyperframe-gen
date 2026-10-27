@@ -159,8 +159,8 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   les retouches Studio** : choisir une voie par phase et l'annoncer.
 - **Fichiers** : `data/design.json` (contenu écran), `data/steps.json`
   (`t`, `camera`), `data/figures.json` (chiffres). Supprimer une étape =
-  la retirer des deux JSON + `python3 scripts/build.py`. Régénération
-  complète : SPEC de `scripts/make-scenario.py` (source de vérité) →
+  la retirer des deux JSON + `python3 fourni par le projet (gabarit non inclus)`. Régénération
+  complète : SPEC de `fourni par le projet (gabarit non inclus)` (source de vérité) →
   `make-scenario.py` → `build.py`. Ne pas toucher aux `data-hf-id`
   (ajoutés par le Studio).
 

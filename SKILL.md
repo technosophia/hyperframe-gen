@@ -295,3 +295,7 @@ sound transcribe assets/voix-posthoc-v1.wav -F json -l fr -o /tmp/tr.json
 Puis le transcript mesuré (`transcript.json`, segments + mots, skill `hyperframes`) et le scénario minuté sur cet audio. Pas de slides. Résoudre les assets, puis la composition. Chaque étape est un clip de la scène, comme `examples/demo/`. Sélecteurs GSAP scopés à l'étape. `npm run check` vert, preview, snapshots, mp4 sur feu vert uniquement.
 
 L'audio nettoyé fait foi : tout timing se remesure après le nettoyage. La caméra suit la section Webcam, sauf surcharge explicite. Pas de cut sec.
+
+## Ce que ce dépôt ne fournit pas
+
+Les gabarits `seuil`, `compare3` et `cols2` sont documentés (`references/visual-language-joriel.md` §9 et `references/scenario-studio-conventions.md` §5) mais n'ont pas de composition dans la démo. Les builders `scripts/build.py`, `scripts/make-steps.py`, `scripts/make-scenario.py` sont fournis par le projet (gabarit non inclus).
