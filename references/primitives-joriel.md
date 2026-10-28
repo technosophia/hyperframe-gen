@@ -1,7 +1,7 @@
 # Primitives HTML — catalogue Joriel
 
 Source de vérité pour la traduction scénario → HTML.
-Extrait de `examples/demo/`.
+Chaque primitive est démontrée une fois, avec son nom affiché à l'écran, dans `examples/demo/` (table : `examples/demo/README.md`). Les styles de `chip`, `stamp`, `dico` et `cols2` sont déduits de `visual-language-joriel.md` §3 : à valider.
 Chaque primitive ci-dessous est un bloc HTML réutilisable tel quel.
 
 ## Structure d'une étape (step)
@@ -40,19 +40,22 @@ Classes : `plain` (blanc), `bleu`, `vert`, `or`, `rouge`, `dim` (grisé, opacity
 ## Barré (strike)
 
 ```html
-<span class="dstrike"><span>préparation à l'oppression</span><span class="sline"></span></span>
+<span class="dstrike"><span>préparation à l'oppression</span><span class="sline1"></span><span class="sline2"></span></span>
 ```
 
 CSS (style-joriel.css) :
 ```css
-.dstrike { font-size: 7.2vh; font-weight: 800; color: var(--blanc); position: relative; display: inline-block; }
-.dstrike .sline { position: absolute; left: 0; top: 50%; width: 100%; height: 1.8vh; background: var(--rouge); transform: translateY(-50%) rotate(-3deg); transform-origin: center center; }
+.dstrike { font-size: 7.2vh; font-weight: 800; color: var(--blanc); position: relative; display: inline-block; line-height: 1; }
+.dstrike .sline1, .dstrike .sline2 { position: absolute; left: 0; top: 55%; width: 100%; height: 1.8vh; background: var(--rouge); transform-origin: center center; }
+.dstrike .sline1 { transform: rotate(-5deg); }
+.dstrike .sline2 { transform: rotate(5deg); }
 ```
 
-Animation GSAP (dessin progressif) :
+Animation GSAP (les deux traits se dessinent l'un après l'autre) :
 ```js
-if (step.querySelector(".sline")) {
-  tl.fromTo("#" + step.id + " .sline", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power2.inOut", transformOrigin: "center center" }, t + 0.25);
+if (step.querySelector(".sline1")) {
+  tl.fromTo("#" + step.id + " .sline1", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut", transformOrigin: "center center" }, t + 0.25);
+  tl.fromTo("#" + step.id + " .sline2", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut", transformOrigin: "center center" }, t + 0.55);
 }
 ```
 
@@ -145,7 +148,7 @@ CSS pour les classes de texte (style-joriel.css) :
 ```css
 .kicker { font-size: 3.8vh; letter-spacing: .22em; text-transform: uppercase; color: var(--bleu-clair); }
 .stitle { font-size: 7.2vh; line-height: 1.08; font-weight: 800; }
-.slideno { font-size: 2.2vh; color: var(--gris-rappel); opacity: .7; letter-spacing: .1em; }
+.slideno { font-size: 2.2vh; color: var(--gris); letter-spacing: .1em; }
 .dkw { font-size: 7.2vh; line-height: 1.2; font-weight: 800; }
 .dsub { font-size: 4.4vh; color: var(--bleu-clair); margin-top: .8vh; }
 .punch-text { font-size: 11vh; line-height: 1.18; font-weight: 900; color: var(--or); max-width: 86vw; }
@@ -228,6 +231,34 @@ if (_vs) {
 <img class="doc-crop" src="assets/references/R02-lemonde-duminil-copin.png" alt="">
 <div class="dsub">Le Monde, ...</div>
 ```
+
+## Carte de référence (ref-card)
+
+Page web stylisée, pour une source citée (`Rxx`). Jamais d'iframe ni de chargement réseau.
+
+```html
+<div class="ref-card" id="ref-I6-1-0">
+  <div class="ref-source">Le Monde · 8 octobre 2026</div>
+  <div class="ref-author">Prénom Nom</div>
+  <div class="ref-title">Titre de l'article</div>
+  <div class="ref-quote">« <span class="hl">extrait mis en valeur</span> suite de la citation »</div>
+  <div class="ref-url">lemonde.fr/…/article</div>
+</div>
+```
+
+Animation GSAP : l'entrée (`opacity`, `y`) et le zoom lent (`scale`) portent sur des propriétés différentes ; le second `fromTo` reçoit `immediateRender: false`, sinon `hyperframes lint` signale `overlapping_gsap_tweens` et `gsap_repeated_fromto_without_baseline` (voir `hyperframes-check.md`).
+```js
+tl.fromTo("#ref-xxx", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t);
+tl.to("#ref-xxx .hl", { color: "#F0B429", backgroundColor: "rgba(240,180,41,0.16)", duration: 0.4 }, t + 0.3);
+tl.fromTo("#ref-xxx", { scale: 1 }, { scale: 1.03, duration: dur, ease: "none", immediateRender: false }, t);
+```
+
+## Capture plein écran (ref-shot)
+
+```html
+<img class="ref-shot" id="ref-xxx" src="assets/references/Rxx-nom.png" alt="description">
+```
+Zoom lent : `tl.fromTo("#ref-xxx", { scale: 1 }, { scale: 1.04, duration: dur, ease: "none" }, t);`. Pas de webcam sur ces étapes (`data-cam="off"`).
 
 ## Mapping scénario → primitive
 

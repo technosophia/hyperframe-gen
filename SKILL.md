@@ -4,7 +4,7 @@ description: Build a Joriel-styled HyperFrames video in one of three modes — a
 argument-hint: "<script.md | video.mkv>"
 author: joriel
 category: Video Creation
-version: 1.9.1
+version: 1.9.2
 ---
 
 # Hyperframe-joriel
@@ -209,7 +209,7 @@ La composition est vue par le spectateur, pas par l'auteur. Règles absolues :
 
 **Nomenclature des fichiers de composition :** toujours deux chiffres avec zéro initial pour le numéro de scène — `i00.html`, `i01.html`, …, `i09.html`, `i10.html`. Jamais `i3.html`. Les identifiants (`data-composition-id`, `window.__timelines`, cadre caméra) suivent le même nommage (`i03`, etc.).
 
-Le HTML réalise le storyboard. `index.html` monte une scène par unité (`compositions/iNN.html`). Le balisage, les classes et la timeline sont ceux de `examples/demo/` : le chapitre de démonstration (15 scènes, `i00` à `i14`), la version publiée. Les ids du scénario sont les labels GSAP. `python3 scripts/check-steps.py`, puis `npm run check`.
+Le HTML réalise le storyboard. `index.html` monte une scène par unité (`compositions/iNN.html`). Le balisage, les classes et la timeline sont ceux de `examples/demo/` : le catalogue des primitives (9 scènes, `i00` à `i08`) : une primitive par étape, texte lorem ipsum, nom affiché à l'écran. Les ids du scénario sont les labels GSAP. `python3 scripts/check-steps.py`, puis `npm run check`.
 
 L'exemple se vérifie seul :
 
@@ -217,7 +217,9 @@ L'exemple se vérifie seul :
 cd $SKILL_DIR/examples/demo && npm run check
 ```
 
-Deux modèles et deux contextes donnent deux HTML. L'exemple fixe le passage d'un chapitre. Le film reprend ce montage, une scène par unité du storyboard. Les scripts de preview du mode slides restent dans la section Slides.
+Avertissements connus de `hyperframes check` et leurs corrections : `references/hyperframes-check.md`.
+
+Deux modèles et deux contextes donnent deux HTML. L'exemple montre chaque primitive une fois ; le film reprend ce balisage et ce montage, une scène par unité du storyboard. Les scripts de preview du mode slides restent dans la section Slides.
 
 ## Contexte LLM
 
@@ -254,4 +256,4 @@ L'audio nettoyé fait foi : tout timing se remesure après le nettoyage. La cam�
 ## Ce que ce dépôt ne fournit pas
 
 - Les builders `scripts/build.py`, `scripts/make-steps.py`, `scripts/make-scenario.py` : propres au projet (gabarit non inclus). Schémas des fichiers qu'ils produisent : `references/data-schemas.md`.
-- Le HTML des gabarits `seuil`, `compare3`, `cols2` : ils sont décrits par du JSON dans `data/design.json` (exemples : `examples/gabarits/design.json`) et rendus par le builder. Seuls `versus`, `diverge` et `dbig` ont du HTML dans la démo.
+- Le HTML des gabarits `seuil` et `compare3` : ils sont décrits par du JSON dans `data/design.json` (exemples : `examples/gabarits/design.json`) et rendus par le builder. Idem `bar`/`bars`, `define`, `brand`, `doc-crop` : aucun balisage dans le dépôt, donc absents de la démo.

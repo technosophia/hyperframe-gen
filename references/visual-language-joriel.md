@@ -26,7 +26,7 @@ consigne : **fonds noir, éléments bleu + vert, mises en valeur or + rouge.**
   --bleu-sombre:#1B2B4A; /* aplats : fond des chips bleus */
   --vert-sombre:#173A26; /* aplats : fond des chips verts */
   --pastille:#E8EDF3;    /* pastille claire derrière un logo (tracé jamais altéré) */
-  --gris-rappel:#6B7484; /* rappel versus grisé (toujours avec opacity:.6) */
+  --gris-rappel:#6B7484; /* historique : trop sombre sur noir (contraste 2,1:1). `.dkw.dim` et `.slideno` utilisent `--gris` */
 }
 ```
 
@@ -80,7 +80,7 @@ titres 96–140, chiffres 260–420, punchlines 110–150.
 ## 3. Primitives (blocs — seuls autorisés)
 
 Chaque étape = combinaison de ces blocs. Le balisage HTML est
-`examples/demo/compositions/i01.html` (`versus`, `diverge`, `dbig`) et `i00.html` (`versus`, étapes `punch`).
+`examples/demo/` : chaque bloc y figure une fois, avec son nom affiché à l'écran (table dans `examples/demo/README.md`).
 
 | Bloc | Usage | Couleur |
 |---|---|---|
@@ -221,7 +221,7 @@ Si aucun mapping ne convient : 1) chercher une composition existante,
    `figures.json` (jamais du texte libre). **Une seule figure par étape**
    (un `count`, ou un `seuil`, ou un `compare3`, jamais deux).
 4. Poser ces blocs dans la composition, sur le balisage de
-   `examples/demo/compositions/i01.html`. `cols2` si ≥ 5 items.
+   `examples/demo/` (table des primitives dans son README). `cols2` si ≥ 5 items.
 5. Les ids du scénario sont les labels GSAP. `check-steps.py`, puis preview :
    lisible à 3 m, 1 idée / étape, zéro chevauchement écran/prompteur.
 
@@ -256,9 +256,9 @@ Lucide/Tabler si importés un jour).
 Le §5 seul ne produit **aucune différence visible** quand deux opérations se
 rabattent sur les mêmes blocs (ex. `compare` ≈ `contrast` → kw + bar).
 Chaque gabarit ci-dessous a une signature de mise en page propre.
-`versus` est balisé dans `examples/demo/compositions/i00.html`
-(étape `I0.1#1`). `diverge`, `seuil` et `compare3` utilisent les classes
-du même CSS. Les utiliser dès que l'intention correspond.
+`versus` et `diverge` sont balisés dans `examples/demo/compositions/i05.html`
+(étapes `I5.1#0` et `I5.1#1`). `seuil` et `compare3` n'ont pas de balisage
+dans le dépôt (voir `SKILL.md`, « Ce que ce dépôt ne fournit pas »). Les utiliser dès que l'intention correspond.
 
 ### 9.1. `versus` — contrast / refute à deux camps
 
