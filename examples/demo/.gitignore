@@ -1,5 +1,6 @@
-assets/voix-posthoc-v1.wav
-assets/cam-clean.mkv
-assets/images/*
-assets/bg/*
+assets/images/
+assets/bg/
 assets/references/
+assets/cam-clean.mkv
+node_modules/
+renders/
