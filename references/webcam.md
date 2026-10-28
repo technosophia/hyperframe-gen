@@ -38,3 +38,18 @@ function applyCam(tl, frame, mode, t) {
 Le corps est recopié dans chaque composition : le script doit rester dans le HTML (scope HyperFrames), pas de fichier partagé.
 
 Le cadre a `data-start="0"` et la durée de sa scène, pour disparaître avec elle. Pas de `style` inline. L'id du cadre est unique dans le projet (`cam-frame-i00`…), les ids `cam` dupliqués se marchent dessus.
+
+## Commandes (mode webcam)
+
+Même init que `SKILL.md` § Projet, puis :
+
+```bash
+cp $SKILL_DIR/scripts/concat-mkv.sh scripts/
+cp $SKILL_DIR/scripts/clean-posthoc.py scripts/
+cp $SKILL_DIR/scripts/check-steps.py scripts/
+cp $SKILL_DIR/scripts/make-sfx.py scripts/
+bash scripts/concat-mkv.sh assets/cam-original.mkv <troncon1.mkv> [<troncon2.mkv> ...]
+python3 scripts/clean-posthoc.py assets/cam-original.mkv
+# → assets/cam-clean.mkv + assets/voix-posthoc-v1.wav (nouveau nom à chaque passe)
+sound transcribe assets/voix-posthoc-v1.wav -F json -l fr -o /tmp/tr.json
+```

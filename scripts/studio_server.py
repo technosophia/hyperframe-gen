@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Serveur du studio : fichiers du projet + POST /prise -> ~/Vidéos.
+"""Serveur du studio : fichiers du projet + POST /prise -> $HF_VIDEOS_DIR (défaut ~/Vidéos).
 
 Usage : python3 scripts/studio_server.py [port=8321]
   (lançable depuis N'IMPORTE QUEL répertoire : sert toujours la racine
   du projet = le parent de scripts/, pas le répertoire courant.)
 
 La page studio*.html envoie la prise (webm) en fin d'enregistrement ;
-elle est écrite dans ~/Vidéos/prise-studio-AAAAMMJJ-HHMMSS.webm.
+elle est écrite dans $HF_VIDEOS_DIR (défaut ~/Vidéos)/prise-studio-AAAAMMJJ-HHMMSS.webm.
 """
 import datetime
 import functools

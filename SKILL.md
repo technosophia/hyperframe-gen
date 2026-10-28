@@ -4,7 +4,7 @@ description: Build a Joriel-styled HyperFrames video in one of three modes — a
 argument-hint: "<script.md | video.mkv>"
 author: joriel
 category: Video Creation
-version: 1.9.0
+version: 1.9.1
 ---
 
 # Hyperframe-joriel
@@ -30,8 +30,6 @@ S'il manque le script : le demander, ou l'obtenir via `hyperframe-scenario`. Un 
 - **Storyboard** : la mise en scène écrite avant la composition (`assets/scenario-hyperframes.md`). Il décrit l'écran, pas ce qui est dit. Généré à partir du `transcript.json` (timecodes complets). C'est ce qu'on appelait auparavant « scénario ».
 - **Composition** : le document HTML animé. Une scène par unité du scénario. Le chapitre de référence est `examples/demo/`.
 - **Preview** : le HTML affiché avant le mp4.
-
-Les références disent encore « Mode A », « Mode B », « guide oral ». Lire ainsi : Mode slides = Mode A, Mode webcam = Mode B, notes = `note:`, transcript = texte dit. Le « scénario » des références est ce fichier d'écran.
 
 ## Principes
 
@@ -104,6 +102,10 @@ Dans les trois modes, on suit le même ordre :
 ### ⚠️ À vérifier
 ### ❌ Écartés
 
+## 1b. Registre des références
+| ID | Type | Source | Fichier local | Statut |
+| R01 | tweet | … | assets/references/R01-….png | ok |
+
 ## 2. Vigilance
 Ce que la thèse ne doit pas faire dire aux chiffres.
 
@@ -112,7 +114,7 @@ Mêmes identifiants que les slides et que la timeline.
 
 ## 4. Scènes
 ### I1 — Titre court
-- section: … · type: numbers · fond: BG-01 · durée estimée : 40 s · figures: F01, F02
+- section: … · type: numbers · fond: BG-01 · durée estimée : 40 s · figures: F01, F02 · ref: R01
 - étapes :
   - `I1.1#0` · cue « mot » → bandeau laconique
   - `I1.1#1` · cue « interpellations » → « +5 000 » : compteur
@@ -122,6 +124,8 @@ Mêmes identifiants que les slides et que la timeline.
 | ID | Description | Scènes |
 | BG-01 | … | I0, I1 |
 ```
+
+Références `Rxx` : `Type` ∈ tweet · page · capture · video · image ; `Statut` ∈ ok · à capturer · bloquée (card). Une étape cite sa source avec `ref: Rxx`. Acquisition : `references/embed-tweets-video.md` §8. Un `Rxx` ne s'affiche jamais à l'écran (Règles absolues).
 
 Identifiants, les mêmes partout :
 
@@ -151,29 +155,7 @@ Chiffres: N figures, statut verify si la source n'est pas confirmée.
 
 ### Slides (mode slides seulement)
 
-`assets/03-slides-advanced-slides.md`, seulement si quelqu'un parle en pas à pas. Les modes auto et webcam n'en ont pas.
-
-```markdown
----
-theme: black
-transition: fade
-controls: false
-progress: true
-slideNumber: false
-margin: 0.05
----
-
-<!-- id: I1.1 -->
-### Depuis la mi-septembre 2026
-# +5 000 interpellations <!-- element class="fragment" -->
-*Source : …*
-note:
-- Idée en plus. Pas la ligne affichée.
-
----
-```
-
-Le `id:` est celui du scénario. Chaque `fragment` est l'étape `#k` suivante. La ligne à l'écran est celle du scénario (`→`), pas le transcript. `note:` est pour le locuteur. Un chiffre ⚠️ du registre porte la pastille, et se dit comme non confirmé.
+Format du deck (un `id:` par slide, un `fragment` = une étape `#k`, `note:` pour le locuteur) : `references/studio-slides.md`, § « Format des slides ». Les modes auto et webcam n'ont pas de slides.
 
 ## Règles de rendu de la composition (spectateur final)
 
@@ -186,6 +168,9 @@ Le `id:` est celui du scénario. Chaque `fragment` est l'étape `#k` suivante. L
 ### Webcam
 
 Trois états : `off`, `pip`, `full`. Rythme : un état dure au moins 2,5 s ; revoir le locuteur (`pip` ou `full`) au moins toutes les ~20 s. Détails (CSS, `applyCam`, règles de cadre) : `references/webcam.md`.
+
+### Règles absolues (spectateur final)
+
 La composition est vue par le spectateur, pas par l'auteur. Règles absolues :
 
 - **Numérotation discrète obligatoire.** Chaque étape affiche son identifiant (`I0.1#0`) en bas à gauche, gris, classe `.slideno`. C’est le repère de debug. Il reste à l’écran, y compris au rendu.
@@ -199,10 +184,7 @@ La composition est vue par le spectateur, pas par l'auteur. Règles absolues :
 ## Assets
 
 ### Fonds
-- Varier les images de fond entre chapitres au minimum.
-
-
-Le storyboard nomme les fonds et les visuels. On les résout avant la composition.
+- Varier les images de fond entre chapitres au minimum. Le storyboard nomme les fonds et les visuels ; on les résout avant la composition.
 
 ### Sources
 
@@ -222,7 +204,6 @@ Le storyboard nomme les fonds et les visuels. On les résout avant la compositio
 ### Règles
 
 - Rien n'est chargé du réseau au rendu.
-- Le storyboard nomme les fonds et les visuels ; on les résout avant la composition.
 
 ## Composition
 
@@ -240,26 +221,10 @@ Deux modèles et deux contextes donnent deux HTML. L'exemple fixe le passage d'u
 
 ## Contexte LLM
 
-Fichiers indispensables, à donner tels quels.
+Fichiers à donner tels quels.
 
-**Scénario**
-
-1. Le texte source.
-   - auto : le script. Le TTS le lit, script = transcript.
-   - slides, avant la prise : le script.
-   - slides, après la prise : le transcript mesuré, pour recaler les temps.
-   - webcam : le transcript mesuré (`transcript.json`, segments et mots).
-2. `references/visual-language-joriel.md`
-3. `SKILL.md`
-
-**Composition**
-
-1. Le scénario de ce film (`assets/scenario-hyperframes.md`).
-2. `references/visual-language-joriel.md`
-3. `references/primitives-joriel.md` (balisage HTML exact par primitive)
-4. `examples/demo/scenario.md`
-5. `examples/demo/index.html`
-6. `examples/demo/compositions/i00.html` (et les suivants)
+- **Scénario → storyboard** : le texte source (auto : le script ; slides, avant la prise : le script, après : le transcript mesuré ; webcam : `transcript.json`), `references/visual-language-joriel.md`, `SKILL.md`.
+- **Storyboard → composition** : le storyboard du film (`assets/scenario-hyperframes.md`), `references/visual-language-joriel.md`, `references/primitives-joriel.md` (balisage HTML exact), puis l'exemple `examples/demo/` : `scenario.md`, `index.html`, `compositions/i00.html` et suivants.
 
 ## Mode auto
 
@@ -272,25 +237,15 @@ Pas de prise, pas de slides. Le TTS lit le script (le scénario oralisé). Le sc
 
 ## Mode slides
 
-Entrée : le script. Résumé et lien : `references/studio-slides.md`.
+Entrée : le script. Écrire le storyboard au format estimé, puis les slides aux mêmes identifiants. La composition suit le storyboard, avant la prise ; après la prise, le transcript peut s'écarter du script et les temps le suivent.
 
+Commandes à copier, deux previews (deck, composition), serveur d'enregistrement, suites de prise : `references/studio-slides.md`.
 
 ## Mode webcam
 
 La prise est déjà faite : le locuteur a lu le script (transcript chapitré), sans composition. Pas de prompteur. Les vidéos par chapitre sont concaténées, puis transcrites pour obtenir `transcript.json`. Le storyboard minuté et la composition partent du transcript mesuré. Détail caméra, nettoyage et cues : `references/posthoc-video-conventions.md`.
 
-Même init que Projet, puis :
-
-```bash
-cp $SKILL_DIR/scripts/concat-mkv.sh scripts/
-cp $SKILL_DIR/scripts/clean-posthoc.py scripts/
-cp $SKILL_DIR/scripts/check-steps.py scripts/
-cp $SKILL_DIR/scripts/make-sfx.py scripts/
-bash scripts/concat-mkv.sh assets/cam-original.mkv <troncon1.mkv> [<troncon2.mkv> ...]
-python3 scripts/clean-posthoc.py assets/cam-original.mkv
-# → assets/cam-clean.mkv + assets/voix-posthoc-v1.wav (nouveau nom à chaque passe)
-sound transcribe assets/voix-posthoc-v1.wav -F json -l fr -o /tmp/tr.json
-```
+Même init que Projet, puis les commandes de `references/webcam.md` (§ Commandes) : concaténer, nettoyer, transcrire.
 
 Puis le transcript mesuré (`transcript.json`, segments + mots, skill `hyperframes`) et le scénario minuté sur cet audio. Pas de slides. Résoudre les assets, puis la composition. Chaque étape est un clip de la scène, comme `examples/demo/`. Sélecteurs GSAP scopés à l'étape. `npm run check` vert, preview, snapshots, mp4 sur feu vert uniquement.
 
@@ -298,4 +253,5 @@ L'audio nettoyé fait foi : tout timing se remesure après le nettoyage. La cam�
 
 ## Ce que ce dépôt ne fournit pas
 
-Les gabarits `seuil`, `compare3` et `cols2` sont documentés (`references/visual-language-joriel.md` §9 et `references/scenario-studio-conventions.md` §5) mais n'ont pas de composition dans la démo. Les builders `scripts/build.py`, `scripts/make-steps.py`, `scripts/make-scenario.py` sont fournis par le projet (gabarit non inclus).
+- Les builders `scripts/build.py`, `scripts/make-steps.py`, `scripts/make-scenario.py` : propres au projet (gabarit non inclus). Schémas des fichiers qu'ils produisent : `references/data-schemas.md`.
+- Le HTML des gabarits `seuil`, `compare3`, `cols2` : ils sont décrits par du JSON dans `data/design.json` (exemples : `examples/gabarits/design.json`) et rendus par le builder. Seuls `versus`, `diverge` et `dbig` ont du HTML dans la démo.

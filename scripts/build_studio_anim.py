@@ -607,7 +607,7 @@ document.getElementById("bRec").onclick = function () {
         document.getElementById("rDl").appendChild(a);
         var st = document.createElement("div");
         st.className = "meta"; st.id = "rSave";
-        st.textContent = "Envoi vers ~/Vidéos…";
+        st.textContent = "Envoi vers le dossier des prises…";
         document.getElementById("rDl").appendChild(st);
         (function send() {
           fetch("prise", { method: "POST", body: blob }).then(function (r) { return r.json(); }).then(function (j) {

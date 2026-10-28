@@ -1,6 +1,6 @@
 # Sous-ensemble Advanced Slides supporté par `build_studio_slides.py`
 
-Basé sur le deck réel `~/Code/hyperframes/lyceens-v2/assets/03-slides-advanced-slides.md`.
+Basé sur un deck réel de l'auteur (non fourni).
 Tout ce qui n'est pas ci-dessous est ignoré sans erreur (jamais de crash de build).
 
 ## Structure

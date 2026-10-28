@@ -21,7 +21,7 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   jamais l'utilisateur) : le scénario déclare par étape `camera: off | pip | full`.
   Géométrie, flou et moment d'usage : references/webcam.md.
   Surcharge utilisateur optionnelle (`camera!:`), jamais exigée.
-- **Zéro studio d'enregistrement** en Mode B : pas de `studio-slides.html`,
+- **Zéro studio d'enregistrement** en mode webcam : pas de `studio-slides.html`,
   pas de prompteur, pas de POST /prise. Le livrable est direct `index.html` auto.
 
 ## 1. Entrée et concaténation
@@ -120,12 +120,12 @@ seule la source des timings change (transcription de l'audio final, pas prompteu
   - `data-media-start` = `data-start` (même timeline coupée ensemble).
     Miroir déjà baked dans le mkv — ne pas re-miroir. SFX 0.10–0.16,
   1 max/étape, `M` + `?mute=1`.
-- Vérifier : `npm run check` (0 erreur ; recouvre `check-steps.py` Mode B
+- Vérifier : `npm run check` (0 erreur ; recouvre `check-steps.py` mode webcam
   via l'assert du build : labels uniques, ordre, `t` croissants),
   `npx hyperframes preview --background`, snapshots (voir §6),
   `render` sur feu vert uniquement.
 
-## 5. Livrables Mode B
+## 5. Livrables mode webcam
 
 - `assets/cam-original.mkv`, `assets/voix-posthoc-vN.wav`,
   `transcript.json`, `assets/chapters.json`,

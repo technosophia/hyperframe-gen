@@ -5,7 +5,7 @@ Usage :
     python3 build_studio_slides.py <slides.md> [-o studio-slides.html] [--assets assets]
 
 Principe (skill hyperframe-joriel) : même coquille studio éprouvée que
-lyceens-guerre-culturelle/studio.html (présentation manuelle + prompteur +
+le studio.html d'un projet existant (présentation manuelle + prompteur +
 webcam coin/plein écran + overlays OBS + enregistrement écran+micro -> webm),
 mais la source des slides n'est PLUS SCENES + transcript.json : c'est le
 fichier Advanced Slides lui-même.
@@ -696,7 +696,7 @@ document.getElementById("bRec").onclick = function () {
         document.getElementById("rDl").appendChild(a);
         var st = document.createElement("div");
         st.className = "meta"; st.id = "rSave";
-        st.textContent = "Envoi vers ~/Vidéos…";
+        st.textContent = "Envoi vers le dossier des prises…";
         document.getElementById("rDl").appendChild(st);
         (function send() {
           fetch("prise", { method: "POST", body: blob }).then(function (r) { return r.json(); }).then(function (j) {

@@ -1,5 +1,5 @@
 ### I00 — scène 0 [BG-00]
-- t=0.00 dur=6.02 cam=off type=step :: I0.1#0 :: ?
+- t=0.00 dur=6.02 cam=off type=step :: I0.1#0 :: [image] Théorie de la Terre plate
 - t=6.02 dur=8.12 cam=pip type=step :: I0.1#1 :: GÉOCENTRISME / HÉLIOCENTRISME
 - t=14.14 dur=7.34 cam=pip type=step :: I0.1#2 :: QUOTIDIEN INCHANGÉ
 - t=21.48 dur=4.56 cam=pip type=step :: I0.1#3 :: TERRE AU CENTRE / INTELLIGENCE HUMAINE
@@ -10,41 +10,41 @@
 
 ### I01 — scène 1 [BG-00]
 - t=44.30 dur=12.08 cam=full type=step :: I1.1#0 :: UNE PRODUCTION INÉDITE
-- t=56.38 dur=11.62 cam=off type=step :: I1.1#1 :: ?
-- t=68.00 dur=9.20 cam=pip type=step :: I1.1#2 :: ?
-- t=77.20 dur=5.76 cam=off type=step :: I1.1#3 :: ?
-- t=82.96 dur=9.62 cam=pip type=step :: I1.1#4 :: ?
+- t=56.38 dur=11.62 cam=off type=step :: I1.1#1 :: 20 Minutes · 8 octobre 2026 Cédric Villani IA : Un « changement radical » des…
+- t=68.00 dur=9.20 cam=pip type=step :: I1.1#2 :: ≈ 12 médailles Fields équivalentes — Villani
+- t=77.20 dur=5.76 cam=off type=step :: I1.1#3 :: Le Monde · 10 octobre 2026 David Larousserie Nouveau coup de massue d’OpenAI…
+- t=82.96 dur=9.62 cam=pip type=step :: I1.1#4 :: 16 problèmes — programme de recherche
 - t=92.58 dur=5.14 cam=pip type=step :: I1.1#5 :: RÉACTION PERSONNELLE
 - t=97.72 dur=2.68 cam=pip type=step :: I1.1#6 :: UN CHOC POUR LE CHERCHEUR
 - t=100.40 dur=5.56 cam=pip type=step :: I1.1#7 :: UN PROBLÈME / UN PROGRAMME
-- t=105.96 dur=6.08 cam=off type=step :: I1.1#8 :: ?
+- t=105.96 dur=6.08 cam=off type=step :: I1.1#8 :: Le Monde · 10 octobre 2026 David Larousserie Nouveau coup de massue d’OpenAI…
 - t=112.04 dur=7.78 cam=pip type=step :: I1.1#9 :: ANNÉES DE TRAVAIL / QUELQUES HEURES
-- t=119.82 dur=3.34 cam=pip type=step :: I1.1#10 :: ?
-- t=123.16 dur=6.46 cam=pip type=step :: I1.1#11 :: ?
+- t=119.82 dur=3.34 cam=pip type=step :: I1.1#10 :: ≈ 4000 problèmes soumis
+- t=123.16 dur=6.46 cam=pip type=step :: I1.1#11 :: ≈ 3 h de calcul équivalent par formalisation
 - t=129.62 dur=10.90 cam=pip type=step :: I1.1#12 :: NAVIER–STOKES
-- t=140.52 dur=1.98 cam=pip type=step :: I1.1#13 :: ?
-- t=142.50 dur=3.50 cam=pip type=step :: I1.1#14 :: ?
+- t=140.52 dur=1.98 cam=pip type=step :: I1.1#13 :: 88 h Navier–Stokes
+- t=142.50 dur=3.50 cam=pip type=step :: I1.1#14 :: 10 000 agents coordonnés
 - t=146.00 dur=8.14 cam=pip type=step :: I1.1#15 :: RÉSULTATS À EXAMINER
 - t=154.14 dur=6.50 cam=pip type=step :: I1.1#16 :: RÉSULTATS RÉEXAMINÉS
 - t=160.64 dur=5.90 cam=pip type=step :: I1.1#17 :: UN ÉVÉNEMENT HISTORIQUE ?
-- t=166.54 dur=12.98 cam=off type=step :: I1.1#18 :: ?
-- t=179.52 dur=5.16 cam=pip type=step :: I1.1#19 :: ?
+- t=166.54 dur=12.98 cam=off type=step :: I1.1#18 :: [image] Terence Tao
+- t=179.52 dur=5.16 cam=pip type=step :: I1.1#19 :: PRODUCTION MACHINE ↗ production qui accélère ↘ compréhension humaine en retard
 
 ### I02 — scène 2 [BG-00]
 - t=184.68 dur=11.42 cam=full type=step :: I2.1#0 :: TROP ABSTRAIT ?
 - t=196.10 dur=1.80 cam=off type=punch :: I2.2#0 :: QUELQUES EMPLOIS ?
-- t=197.90 dur=5.58 cam=pip type=step :: I2.3#0 :: ?
-- t=203.48 dur=9.54 cam=off type=step :: I2.3#1 :: ?
+- t=197.90 dur=5.58 cam=pip type=step :: I2.3#0 :: CE N'EST QU'UN PROBLÈME DE MÉTIER
+- t=203.48 dur=9.54 cam=off type=step :: I2.3#1 :: [image] Révolution copernicienne
 - t=213.02 dur=4.86 cam=pip type=step :: I2.3#2 :: PAS SEULEMENT CALCULER
 
 ### I03 — scène 3 [BG-00]
 - t=217.88 dur=5.08 cam=pip type=step :: I3.0#0 :: POUR MESURER L’AMPLEUR
 - t=222.96 dur=7.60 cam=off type=step :: I3.1#0 :: L’EXPÉRIENCE QUOTIDIENNE
-- t=230.56 dur=3.08 cam=off type=step :: I3.1#1 :: ?
+- t=230.56 dur=3.08 cam=off type=step :: I3.1#1 :: [image] Paysage avec soleil
 - t=233.64 dur=13.62 cam=pip type=step :: I3.1#2 :: CE QUE L’ON VOIT / CE QUE DISENT LES ÉQUATIONS
 - t=247.26 dur=4.02 cam=off type=step :: I3.1#3 :: ÉQUATIONS
 - t=251.28 dur=4.82 cam=pip type=step :: I3.1#4 :: LES YEUX / LES ÉQUATIONS
-- t=256.10 dur=9.46 cam=off type=step :: I3.1#5 :: ?
+- t=256.10 dur=9.46 cam=off type=step :: I3.1#5 :: [image] Johannes Kepler
 - t=265.56 dur=3.24 cam=off type=step :: I3.1#6 :: GÉOCENTRISME / HÉLIOCENTRISME
 - t=268.80 dur=8.06 cam=off type=step :: I3.1#7 :: 1543 → 1632 → 1838
 - t=276.86 dur=6.84 cam=pip type=step :: I3.1#8 :: VÉRITÉ SCIENTIFIQUE
@@ -60,7 +60,7 @@
 - t=338.30 dur=10.50 cam=pip type=step :: I4.2#4 :: RETOUR AU MOYEN ÂGE
 
 ### I05 — scène 5 [BG-00]
-- t=348.80 dur=3.20 cam=off type=step :: I5.1#0 :: ?
+- t=348.80 dur=3.20 cam=off type=step :: I5.1#0 :: [image] Tartaglia
 - t=352.00 dur=4.58 cam=off type=step :: I5.1#1 :: 1535 → 1545
 - t=356.58 dur=5.96 cam=off type=punch :: I5.2#0 :: DES DUELS DE MATHS.
 - t=362.54 dur=3.56 cam=pip type=step :: I5.3#0 :: 30 PROBLÈMES
@@ -83,9 +83,9 @@
 - t=443.26 dur=3.36 cam=pip type=step :: I7.1#0 :: CERTIFICAT
 - t=446.62 dur=4.54 cam=pip type=step :: I7.1#1 :: PRODUCTION EN AVANCE
 - t=451.16 dur=3.80 cam=pip type=step :: I7.1#2 :: NAVIER–STOKES
-- t=454.96 dur=5.42 cam=off type=step :: I7.1#3 :: ?
+- t=454.96 dur=5.42 cam=off type=step :: I7.1#3 :: [image] Script LEAN
 - t=460.38 dur=2.12 cam=off type=step :: I7.1#4 :: 616 000 LIGNES
-- t=462.50 dur=2.50 cam=off type=step :: I7.1#5 :: ?
+- t=462.50 dur=2.50 cam=off type=step :: I7.1#5 :: [image] Silicon Reckoner
 - t=465.00 dur=2.24 cam=off type=step :: I7.1#6 :: CORRECT
 - t=467.24 dur=6.00 cam=pip type=step :: I7.1#7 :: CERTIFIÉ ≠ COMPRIS
 - t=473.24 dur=16.86 cam=off type=punch :: I7.2#0 :: UN NOUVEAU CLERGÉ ?
@@ -95,7 +95,7 @@
 - t=519.74 dur=11.46 cam=pip type=step :: I7.3#3 :: LES MATHS : PREMIER RÉVÉLATEUR
 - t=531.20 dur=2.32 cam=off type=step :: I7.3#4 :: PARTENAIRES PROJECT GLASSWING
 - t=533.52 dur=3.20 cam=off type=step :: I7.3#5 :: MILLIERS DE FAILLES / ACCÈS RÉSERVÉ
-- t=536.72 dur=17.56 cam=off type=step :: I7.3#6 :: ?
+- t=536.72 dur=17.56 cam=off type=step :: I7.3#6 :: [image] Anthropic Glasswing
 
 ### I08 — scène 8 [BG-00]
 - t=554.28 dur=8.64 cam=pip type=step :: I8.1#0 :: TROUVER / SUIVRE
@@ -127,9 +127,9 @@
 - t=717.26 dur=15.88 cam=pip type=step :: I10.3#2 :: TERRAIN  ↔  MODÈLES STATISTIQUES
 
 ### I11 — scène 11 [BG-00]
-- t=733.14 dur=4.48 cam=off type=step :: I11.1#0 :: ?
+- t=733.14 dur=4.48 cam=off type=step :: I11.1#0 :: [image] Marchés financiers
 - t=737.62 dur=19.06 cam=off type=step :: I11.1#1 :: COPULE GAUSSIENNE
-- t=756.68 dur=2.04 cam=off type=step :: I11.1#2 :: ?
+- t=756.68 dur=2.04 cam=off type=step :: I11.1#2 :: Wired · Février 2009 Felix Salmon Recipe for Disaster: The Formula That Killed…
 - t=758.72 dur=3.84 cam=pip type=step :: I11.1#3 :: RISQUES FINANCIERS
 - t=762.56 dur=4.22 cam=pip type=step :: I11.1#4 :: TRAITEMENTS MÉDICAUX
 - t=766.78 dur=1.86 cam=pip type=step :: I11.1#5 :: CRÉDITS
@@ -148,8 +148,8 @@
 - t=819.06 dur=7.28 cam=pip type=step :: I12.1#6 :: QUI DÉCIDE ?
 - t=826.34 dur=4.72 cam=pip type=step :: I12.1#7 :: PAS SEULEMENT DES EMPLOIS
 - t=831.06 dur=3.20 cam=pip type=step :: I12.1#8 :: REPENSER LA PRATIQUE DES MATHS
-- t=834.26 dur=5.06 cam=off type=step :: I12.1#9 :: ?
-- t=839.32 dur=5.48 cam=off type=step :: I12.1#10 :: ?
+- t=834.26 dur=5.06 cam=off type=step :: I12.1#9 :: OpenAI · 6 octobre 2026 OpenAI Advisory Group on Mathematics and AI «…
+- t=839.32 dur=5.48 cam=off type=step :: I12.1#10 :: OpenAI / Terence Tao · 6 octobre 2026 OpenAI / Terence Tao Advisory Group on…
 
 ### I13 — scène 13 [BG-00]
 - t=844.80 dur=8.46 cam=pip type=step :: I13.1#0 :: DÉCOUVERTES  ↔  GARDE-FOUS

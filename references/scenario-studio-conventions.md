@@ -3,7 +3,7 @@
 Le balisage du rendu est `examples/demo/`. Ce fichier décrit le studio :
 correspondance des ids, prompteur, sons, fonds.
 
-Pattern éprouvé sur `~/Code/hyperframes/lyceens-v3` : quand le projet contient,
+Pattern éprouvé (projets de l'auteur, non fournis) : quand le projet contient,
 en plus du deck slides, un **fichier scénario** (scènes, étapes, fonds, chiffres),
 la présentation joue le scénario avec le moteur HyperFrames et le prompteur
 n'affiche que le « en plus ». Les fichiers sources (`01-prompt`, `02-scenario`,
@@ -126,7 +126,7 @@ rajouter au prompteur**. Chaque bloc = ancre minimale + « en plus » :
 
 - `studio.html` (manuel à enregistrer) + `index.html` (auto, mêmes labels) +
   `compositions/` (1/scène, indépendantes) + `studio-slides.html` (skill, conformité).
-- `scripts/` : `build.py` (adapté du gabarit lyceens-v3), `make-steps.py`,
+- `scripts/` : `build.py` et `make-steps.py` (propres au projet, non fournis : voir `SKILL.md`),
   `make-sfx.py`, `check-steps.py`, `studio_server.py`, `build_studio_slides.py`.
 - `README.md` (lancer, relier, contrôler, `?draft=1`, sons) + `BUILD-REPORT.md`
   (tableau étape ↔ label, BG à refaire, ⚠, écarts skill, vérifications manuelles).

@@ -1,6 +1,6 @@
 # Embed tweets & vidéos externes (X, YouTube) — acquis testés 2026-10-15/16
 
-Exemple vivant : `~/Code/hyperframes/demo/tweet-test.html` (4 scènes, 87 s :
+Exemple vivant : un test de l'auteur, non fourni (4 scènes, 87 s :
 carte + image, long tweet + scroll, extrait vidéo X, extrait YouTube).
 
 ## 0. Règle mère
