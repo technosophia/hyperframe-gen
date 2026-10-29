@@ -4,7 +4,7 @@ description: Build a Joriel-styled HyperFrames video in one of three modes — a
 argument-hint: "<script.md | video.mkv>"
 author: joriel
 category: Video Creation
-version: 1.9.2
+version: 1.10.0
 ---
 
 # Hyperframe-joriel
@@ -59,7 +59,7 @@ Variables d'environnement (valeurs par défaut entre parenthèses). Aucun chemin
 | `HF_VIDEOS_DIR` | sortie des prises studio | `~/Vidéos` |
 | `HF_OVERLAYS_DIR` | overlays lus par le studio | `$HF_VIDEOS_DIR/OBS/assets` |
 
-Dépendances : Node ≥ 22, `hyperframes@0.8.123`, FFmpeg, Python 3, Chrome ou Edge (prise studio). Skills compagnes : `thesvg`, `media-use`, `hyperframes`, `hyperframe-scenario` (optionnelle), `report` (diagnostic). CLI fast-market : `image`, `sound`.
+Dépendances : Node ≥ 22, `hyperframes@0.8.123`, FFmpeg, Python 3, Chrome ou Edge (prise studio), `yt-dlp` (inserts seulement). Skills compagnes : `thesvg`, `media-use`, `hyperframes`, `hyperframe-scenario` (optionnelle), `report` (diagnostic). CLI fast-market : `image`, `sound`.
 
 ## Projet
 
@@ -79,8 +79,9 @@ Dans les trois modes, on suit le même ordre :
 2. **Collecte des assets** — Pexels (image/vidéo 1920×1080), `thesvg` (SVG local sans altération, logos), recherche web (personnalités), génération via fast-market `image`, embeds YouTube/tweet (voir section Assets).
 3. **Storyboard estimé** — écrit à partir du script, sans temps (modes auto et slides seulement ; le mode webcam n'en a pas).
 4. **Transcript** — obtenu selon le mode (TTS+STT en auto, prise en slides, concat+clean+STT en webcam) → `transcript.json` (segments + mots, timecodes complets).
-5. **Storyboard minuté** — temps absolus issus de `transcript.json`, mêmes identifiants et mêmes lignes que l'estimé. En webcam, c'est le seul storyboard. Plan de l'écran, identifiants, cues.
+5. **Storyboard minuté** — temps absolus issus de `transcript.json`, mêmes identifiants et mêmes lignes que l'estimé. En webcam, c'est le seul storyboard. Plan de l'écran, identifiants, cues. Si l'utilisateur fournit des extraits à insérer, proposer ici leur emplacement (`assets/inserts.json`, ancré sur une étape) : `references/inserts.md`.
 6. **Composition HyperFrames** — traduction du storyboard minuté en HTML/CSS/JS selon le langage visuel figé (primitives). Voir `references/primitives-joriel.md` et `visual-language-joriel.md`.
+7. **Post-rendu** — si `assets/inserts.json` existe, une fois `renders/full.mp4` rendu, lancer `scripts/post-render.py` : téléchargement des extraits, légère transformation, un seul graphe ffmpeg → `renders/final.mp4`. Voir `references/inserts.md`.
 
 ## Storyboard
 
