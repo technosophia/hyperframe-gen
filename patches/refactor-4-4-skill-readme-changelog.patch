@@ -1,0 +1,69 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 4031b9f..66e7203 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,11 @@
+ # Changelog
+ 
++## 1.10.0
++
++- Inserts : extraits vidéo qui remplacent l'image et le son du master, posés après le rendu. `scripts/post-render.py` télécharge (yt-dlp), découpe, transforme (hauteur du son +5 % à durée constante, rotation de 1° avec zoom) et assemble en un seul graphe ffmpeg. Les coupes sont ancrées sur les étapes du storyboard, pas sur des temps ; `--plan` affiche le texte autour de chaque coupe, `--preview` produit un clip de 11 s par coupe.
++- `references/inserts.md` (procédure pour l'agent, manifeste), `examples/inserts.example.json`, `scripts/test-post-render.sh`.
++- `SKILL.md` : l'agent propose l'emplacement des inserts au storyboard minuté ; étape 7 « Post-rendu ».
++
+ ## 1.9.2
+ 
+ - `examples/demo` refait en catalogue : 24 étapes, une primitive ou situation par étape, lorem ipsum, nom affiché à l'écran (`assets/demo-label.css`), 3 étapes au plus par fichier ; plus de voix ni de contenu du projet de maths.
+diff --git a/SKILL.md b/SKILL.md
+index 608e7df..97ca9c1 100644
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -4,7 +4,7 @@ description: Build a Joriel-styled HyperFrames video in one of three modes — a
+ argument-hint: "<script.md | video.mkv>"
+ author: joriel
+ category: Video Creation
+-version: 1.9.2
++version: 1.10.0
+ ---
+ 
+ # Hyperframe-joriel
+@@ -59,7 +59,7 @@ Variables d'environnement (valeurs par défaut entre parenthèses). Aucun chemin
+ | `HF_VIDEOS_DIR` | sortie des prises studio | `~/Vidéos` |
+ | `HF_OVERLAYS_DIR` | overlays lus par le studio | `$HF_VIDEOS_DIR/OBS/assets` |
+ 
+-Dépendances : Node ≥ 22, `hyperframes@0.8.123`, FFmpeg, Python 3, Chrome ou Edge (prise studio). Skills compagnes : `thesvg`, `media-use`, `hyperframes`, `hyperframe-scenario` (optionnelle), `report` (diagnostic). CLI fast-market : `image`, `sound`.
++Dépendances : Node ≥ 22, `hyperframes@0.8.123`, FFmpeg, Python 3, Chrome ou Edge (prise studio), `yt-dlp` (inserts seulement). Skills compagnes : `thesvg`, `media-use`, `hyperframes`, `hyperframe-scenario` (optionnelle), `report` (diagnostic). CLI fast-market : `image`, `sound`.
+ 
+ ## Projet
+ 
+@@ -79,8 +79,9 @@ Dans les trois modes, on suit le même ordre :
+ 2. **Collecte des assets** — Pexels (image/vidéo 1920×1080), `thesvg` (SVG local sans altération, logos), recherche web (personnalités), génération via fast-market `image`, embeds YouTube/tweet (voir section Assets).
+ 3. **Storyboard estimé** — écrit à partir du script, sans temps (modes auto et slides seulement ; le mode webcam n'en a pas).
+ 4. **Transcript** — obtenu selon le mode (TTS+STT en auto, prise en slides, concat+clean+STT en webcam) → `transcript.json` (segments + mots, timecodes complets).
+-5. **Storyboard minuté** — temps absolus issus de `transcript.json`, mêmes identifiants et mêmes lignes que l'estimé. En webcam, c'est le seul storyboard. Plan de l'écran, identifiants, cues.
++5. **Storyboard minuté** — temps absolus issus de `transcript.json`, mêmes identifiants et mêmes lignes que l'estimé. En webcam, c'est le seul storyboard. Plan de l'écran, identifiants, cues. Si l'utilisateur fournit des extraits à insérer, proposer ici leur emplacement (`assets/inserts.json`, ancré sur une étape) : `references/inserts.md`.
+ 6. **Composition HyperFrames** — traduction du storyboard minuté en HTML/CSS/JS selon le langage visuel figé (primitives). Voir `references/primitives-joriel.md` et `visual-language-joriel.md`.
++7. **Post-rendu** — si `assets/inserts.json` existe, une fois `renders/full.mp4` rendu, lancer `scripts/post-render.py` : téléchargement des extraits, légère transformation, un seul graphe ffmpeg → `renders/final.mp4`. Voir `references/inserts.md`.
+ 
+ ## Storyboard
+ 
+diff --git a/README.md b/README.md
+index d708dbd..127cc3f 100644
+--- a/README.md
++++ b/README.md
+@@ -16,7 +16,7 @@ Prérequis et variables d'environnement : `SKILL.md` § Prérequis.
+ |---|---|
+ | `SKILL.md` | point d'entrée : routeur, vocabulaire, étapes, format du storyboard, règles de rendu |
+ | `references/` | langage visuel, primitives (balisage exact), conventions studio et webcam, schémas `data/`, glossaire |
+-| `scripts/` | builders studio, `check-steps.py`, nettoyage webcam, `lint-repo.py` |
++| `scripts/` | builders studio, `check-steps.py`, nettoyage webcam, `post-render.py` (inserts), `lint-repo.py` |
+ | `examples/demo/` | catalogue des primitives (9 scènes, lorem ipsum, nom affiché à l'écran) ; médias factices via `scripts/make-placeholders.sh` |
+ | `examples/gabarits/` | exemples JSON de `data/design.json` pour `diverge`, `seuil`, `compare3`, `cols2` |
+ 
+@@ -24,5 +24,6 @@ Prérequis et variables d'environnement : `SKILL.md` § Prérequis.
+ 
+ ```bash
+ python3 scripts/lint-repo.py                                          # chemins cités, termes obsolètes
++bash scripts/test-post-render.sh                                      # inserts : test de bout en bout, FFmpeg seul
+ cd examples/demo && bash scripts/make-placeholders.sh && npm run check  # nécessite Node, FFmpeg, accès réseau
+ ```
